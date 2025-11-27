@@ -14,3 +14,4 @@ PyPDF2
 google-cloud-storage
 langchain_community
 tiktoken
+langchain-openai
