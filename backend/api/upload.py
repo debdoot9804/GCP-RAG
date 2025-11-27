@@ -1,6 +1,6 @@
 from fastapi import APIRouter, UploadFile, File
 from typing import List
-from core.embeddings import process_and_store_documents
+from ..core.embeddings import process_and_store_documents
 
 router = APIRouter()
 

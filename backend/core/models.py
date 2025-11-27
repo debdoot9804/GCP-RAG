@@ -34,3 +34,11 @@ class Document(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     session = relationship("Session", back_populates="documents")
+
+# ✅ This defines 3 main tables:
+
+# sessions: each chat conversation
+
+# messages: user + assistant exchanges
+
+# documents: uploaded file chunks + embeddings

@@ -2,8 +2,8 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
-from core.db import get_db
-from api.upload import router as upload_router
+from .core.db import get_db
+from .api.upload import router as upload_router
 
 # Create FastAPI app
 app = FastAPI(

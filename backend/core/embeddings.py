@@ -1,7 +1,7 @@
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import AzureOpenAIEmbeddings
-from core.vectorstore_pg import store_embeddings
-from utils.parser import parse_file
+from .vectorstore_pg import store_embeddings
+from ..utils.parser import parse_file
 import os
 
 def process_and_store_documents(files, session_id: str):
