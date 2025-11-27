@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+pydantic
+sqlalchemy 
+psycopg2-binary 
+pgvector 
+python-dotenv
+openai
+langchain
+unstructured 
+python-docx 
+python-pptx 
+PyPDF2 
+google-cloud-storage
+langchain_community
+tiktoken
