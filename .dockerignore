@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+*.db
+.git
+.gitignore
+google-cloud-sdk
+google-cloud-cli-darwin-x86_64.tar.gz
+test.py

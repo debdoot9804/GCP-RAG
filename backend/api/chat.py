@@ -1,4 +1,5 @@
 import os
+from unittest import result
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
@@ -102,7 +103,18 @@ async def chat(session_id: str, user_input: str, db: Session = Depends(get_db)):
     db.add(assistant_msg)
     db.commit()
 
+
+
+    
+    sources = [doc.metadata for doc in result["source_documents"]]
+
+    # Add this for uniqueness
+    unique_sources = [dict(t) for t in {tuple(sorted(d.items())) for d in sources}]
+
     return {
         "answer": result["answer"],
-        "sources": [doc.metadata for doc in result["source_documents"]],
+        "sources": unique_sources
     }
+
+
+   
