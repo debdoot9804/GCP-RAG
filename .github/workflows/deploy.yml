@@ -43,9 +43,4 @@ jobs:
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
             --add-cloudsql-instances ${{ env.PROJECT_ID }}:us-central1:rag-postgres \
-            --set-env-vars DATABASE_URL="postgresql+psycopg2://postgres:DEB9804%40sen@/ragdb?host=/cloudsql/${{ env.PROJECT_ID }}:us-central1:rag-postgres",\
-OPENAI_ENDPOINT="https://dept-podcast-openai.openai.azure.com/",\
-OPENAI_API_KEY="27fb144665274236a277da030c2ebec3",\
-API_VERSION="2024-12-01-preview",\
-OPENAI_CHAT_DEPLOYMENT_NAME="gpt-4o-mini",\
-OPENAI_EMBED_DEPLOYMENT_NAME="text-embedding-3-large"
+            --set-env-vars="DATABASE_URL=postgresql+psycopg2://postgres:DEB9804%40sen@/ragdb?host=/cloudsql/${{ env.PROJECT_ID }}:us-central1:rag-postgres,OPENAI_ENDPOINT=https://dept-podcast-openai.openai.azure.com/,OPENAI_API_KEY=27fb144665274236a277da030c2ebec3,API_VERSION=2024-12-01-preview,OPENAI_CHAT_DEPLOYMENT_NAME=gpt-4o-mini,OPENAI_EMBED_DEPLOYMENT_NAME=text-embedding-3-large"
