@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from .core.db import get_db
 from .api.upload import router as upload_router
-
+from .api.chat import router as chat_router
 # Create FastAPI app
 app = FastAPI(
     title="RAG Chatbot Backend",
@@ -48,3 +48,5 @@ app.include_router(upload_router, prefix="/upload", tags=["Upload"])
 # 5️⃣ Ready for Phase 5 (Chatbot routes)
 # ------------------------------------------------------
 # We will add a /chat route later to handle conversations using Azure GPT-4o
+app.include_router(chat_router, prefix="/chat", tags=["Chat"])
+

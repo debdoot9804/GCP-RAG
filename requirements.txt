@@ -17,3 +17,4 @@ tiktoken
 langchain-openai
 pdfminer.six
 pi-heif
+pdf2

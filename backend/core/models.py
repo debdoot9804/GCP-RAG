@@ -3,7 +3,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from pgvector.sqlalchemy import Vector
 import uuid, datetime
-from core.db import Base
+from .db import Base
 
 class Session(Base):
     __tablename__ = "sessions"
