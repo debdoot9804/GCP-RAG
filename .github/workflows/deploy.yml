@@ -6,13 +6,12 @@ on:
       - main
 
 env:
-  REGION: ${{ secrets.GCP_REGION }}
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  SERVICE: ${{ secrets.GCP_SERVICE }}
+  REGION: us-central1
+  PROJECT_ID: my-rag-479515
+  SERVICE: rag-backend
 
 jobs:
   deploy:
-    name: Build & Deploy Backend
     runs-on: ubuntu-latest
 
     steps:
@@ -22,28 +21,31 @@ jobs:
       - name: 🔧 Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          project_id: ${{ env.PROJECT_ID }}
           export_default_credentials: true
 
       - name: ✅ Authenticate with GCP
         run: |
           echo "${{ secrets.GCP_SA_KEY }}" | base64 --decode > key.json
           gcloud auth activate-service-account --key-file=key.json
-          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
-          gcloud auth list
-          gcloud config list
+          gcloud config set project ${{ env.PROJECT_ID }}
 
       - name: 🏗️ Build and Push Docker Image
         run: |
           gcloud builds submit \
-            --tag us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/rag-repo/rag-backend:latest .
+            --tag us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/rag-repo/rag-backend:latest . || true
 
       - name: 🚀 Deploy to Cloud Run
         run: |
-          gcloud run deploy ${{ secrets.GCP_SERVICE }} \
-            --image us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/rag-repo/rag-backend:latest \
+          gcloud run deploy ${{ env.SERVICE }} \
+            --image us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/rag-repo/rag-backend:latest \
             --platform managed \
-            --region ${{ secrets.GCP_REGION }} \
+            --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --add-cloudsql-instances ${{ secrets.GCP_PROJECT_ID }}:us-central1:rag-postgres \
-            --set-env-vars DATABASE_URL="${{ secrets.DATABASE_URL }},OPENAI_ENDPOINT=${{ secrets.OPENAI_ENDPOINT }},OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }},API_VERSION=${{ secrets.API_VERSION }},OPENAI_CHAT_DEPLOYMENT_NAME=${{ secrets.OPENAI_CHAT_DEPLOYMENT_NAME }},OPENAI_EMBED_DEPLOYMENT_NAME=${{ secrets.OPENAI_EMBED_DEPLOYMENT_NAME }}"
+            --add-cloudsql-instances ${{ env.PROJECT_ID }}:us-central1:rag-postgres \
+            --set-env-vars DATABASE_URL="postgresql+psycopg2://postgres:DEB9804%40sen@/ragdb?host=/cloudsql/${{ env.PROJECT_ID }}:us-central1:rag-postgres",\
+OPENAI_ENDPOINT="https://dept-podcast-openai.openai.azure.com/",\
+OPENAI_API_KEY="27fb144665274236a277da030c2ebec3",\
+API_VERSION="2024-12-01-preview",\
+OPENAI_CHAT_DEPLOYMENT_NAME="gpt-4o-mini",\
+OPENAI_EMBED_DEPLOYMENT_NAME="text-embedding-3-large"
