@@ -30,13 +30,20 @@ async def chat(session_id: str, user_input: str, db: Session = Depends(get_db)):
     db.commit()
 
     # 3️⃣ Initialize embedding + vector store
+    # embedding_fn = AzureOpenAIEmbeddings(
+    #     model="text-embedding-3-large",
+    #     deployment=os.getenv("OPENAI_EMBED_DEPLOYMENT_NAME"),
+    #     openai_api_base=os.getenv("OPENAI_ENDPOINT"),
+    #     openai_api_key=os.getenv("OPENAI_API_KEY"),
+    #     openai_api_type="azure"
+    # )
+
     embedding_fn = AzureOpenAIEmbeddings(
-        model="text-embedding-3-large",
-        deployment=os.getenv("AZURE_EMBEDDING_DEPLOYMENT"),
-        openai_api_base=os.getenv("AZURE_OPENAI_ENDPOINT"),
-        openai_api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-        openai_api_type="azure"
-    )
+    model="text-embedding-3-large",
+    azure_endpoint=os.getenv("OPENAI_ENDPOINT"),
+    api_key=os.getenv("OPENAI_API_KEY"),
+    api_version="2024-12-01-preview"
+)
 
     vectorstore = PGVector(
         connection_string=os.getenv("DATABASE_URL"),
@@ -68,10 +75,10 @@ async def chat(session_id: str, user_input: str, db: Session = Depends(get_db)):
 
     # 5️⃣ Initialize LLM
     llm = AzureChatOpenAI(
-        azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
-        openai_api_version="2024-02-15-preview",
-        deployment_name="gpt-4o",
-        openai_api_key=os.getenv("AZURE_OPENAI_API_KEY"),
+        azure_endpoint=os.getenv("OPENAI_ENDPOINT"),
+        openai_api_version="2024-12-01-preview",
+        deployment_name="gpt-4o-mini",
+        openai_api_key=os.getenv("OPENAI_API_KEY"),
         openai_api_type="azure"
     )
 

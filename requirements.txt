@@ -13,8 +13,11 @@ python-pptx
 PyPDF2 
 google-cloud-storage
 langchain_community
-tiktoken
+tiktoken 
 langchain-openai
 pdfminer.six
 pi-heif
 pdf2
+unstructured[pdf,pytesseract]
+pdf2image 
+pillow
