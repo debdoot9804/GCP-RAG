@@ -8,7 +8,10 @@ def delete_session_embeddings(session_id: str):
     """Deletes all embeddings for a given session_id."""
     engine = create_engine(os.getenv("DATABASE_URL"))
     with engine.connect() as conn:
-        conn.execute(text("DELETE FROM langchain_pg_embedding WHERE metadata->>'session_id' = :sid"), {"sid": session_id})
+        conn.execute(
+            text("DELETE FROM langchain_pg_embedding WHERE cmetadata->>'session_id' = :sid"),
+            {"sid": session_id}
+        )
         conn.commit()
 
 
