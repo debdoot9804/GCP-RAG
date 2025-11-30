@@ -4,7 +4,7 @@ from ..core.embeddings import process_and_store_documents
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("/upload")
 async def upload_files(session_id: str, files: List[UploadFile] = File(...)):
     if len(files) > 3:
         return {"error": "Maximum 3 files allowed"}
