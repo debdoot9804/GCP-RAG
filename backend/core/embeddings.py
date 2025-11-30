@@ -12,7 +12,11 @@ load_dotenv()
 os.environ["AZURE_OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["AZURE_OPENAI_ENDPOINT"] = os.getenv("OPENAI_ENDPOINT")
 os.environ["AZURE_OPENAI_API_VERSION"] = os.getenv("API_VERSION")
+if os.getenv("HF_TOKEN"):
+    os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"
+    os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 
+    
 def process_and_store_documents(files, session_id: str):
     """Process uploaded files, extract text, split, embed, and store in Postgres."""
     
