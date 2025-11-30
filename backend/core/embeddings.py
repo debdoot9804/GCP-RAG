@@ -1,5 +1,10 @@
 import os
 from dotenv import load_dotenv
+from huggingface_hub import login
+
+load_dotenv()
+
+        
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import AzureOpenAIEmbeddings
 from .vectorstore_pg import store_embeddings
@@ -7,14 +12,11 @@ from .vectorstore_pg import delete_session_embeddings
 from ..utils.parser import parse_file
 
 
-load_dotenv()
+
 
 os.environ["AZURE_OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 os.environ["AZURE_OPENAI_ENDPOINT"] = os.getenv("OPENAI_ENDPOINT")
 os.environ["AZURE_OPENAI_API_VERSION"] = os.getenv("API_VERSION")
-if os.getenv("HF_TOKEN"):
-    os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"
-    os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 
     
 def process_and_store_documents(files, session_id: str):

@@ -23,6 +23,10 @@ pdf2image
 pillow
 streamlit
 requests
+PyMuPDF
+python-docx
+python-pptx
+
 
 
 #my-rag-479515:us-central1:rag-postgres
