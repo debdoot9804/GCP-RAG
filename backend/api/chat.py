@@ -64,7 +64,7 @@ async def chat(session_id: str, user_input: str, db: Session = Depends(get_db)):
     template = """
     You are a helpful AI assistant.
     Use the following context from uploaded documents to answer the user's question.
-
+    
     Context:
     {context}
 
