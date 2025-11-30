@@ -21,5 +21,8 @@ pdf2
 unstructured[pdf,pytesseract]
 pdf2image 
 pillow
+streamlit
+requests
+
 
 #my-rag-479515:us-central1:rag-postgres

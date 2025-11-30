@@ -2,37 +2,33 @@ import streamlit as st
 import requests
 import uuid
 
-# 🎯 Your FastAPI backend URL
+# 🔗 Backend API
 BACKEND_URL = "https://rag-backend-961057228920.us-central1.run.app"
 
-# Page config
+# 🎯 Page Setup
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="wide")
-
-# Session ID (unique per user)
-if "session_id" not in st.session_state:
-    st.session_state.session_id = str(uuid.uuid4())
-
 st.title("🤖 RAG AI Chat Assistant")
 st.markdown("Chat with your uploaded documents — powered by **FastAPI + Azure OpenAI**")
 
-# File upload
-uploaded_file = st.file_uploader("📄 Upload a PDF to index", type=["pdf"])
+# 🧠 Persistent Session ID
+if "session_id" not in st.session_state:
+    st.session_state.session_id = str(uuid.uuid4())
 
-if uploaded_file:
-    with st.spinner("📤 Uploading file..."):
-        files = {"file": (uploaded_file.name, uploaded_file, "application/pdf")}
+# 📤 File Upload Section
+uploaded_files = st.file_uploader("Upload one or more PDFs", type=["pdf"], accept_multiple_files=True)
+
+if uploaded_files:
+    with st.spinner("Processing your PDFs..."):
         try:
-
-
+            files = [("files", (f.name, f, "application/pdf")) for f in uploaded_files]
             res = requests.post(
-    f"{BACKEND_URL}/upload",
-    params={"session_id": st.session_state.session_id},
-    files={"files": (uploaded_file.name, uploaded_file, "application/pdf")},
-)
-
-            #res = requests.post(f"{BACKEND_URL}/upload", files=files)
+                f"{BACKEND_URL}/upload/",
+                params={"session_id": st.session_state.session_id},
+                files=files,
+                timeout=300
+            )
             if res.status_code == 200:
-                st.success(f"✅ {uploaded_file.name} uploaded successfully!")
+                st.success("✅ Files processed successfully!")
             else:
                 st.error(f"❌ Upload failed: {res.text}")
         except Exception as e:
@@ -40,28 +36,28 @@ if uploaded_file:
 
 st.divider()
 
-# Chat area
+# 💬 Chat UI
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 for msg in st.session_state.messages:
     role, content = msg["role"], msg["content"]
-    if role == "user":
-        st.chat_message("user").markdown(content)
-    else:
-        st.chat_message("assistant").markdown(content)
+    st.chat_message(role).markdown(content)
 
-# Chat input
-if prompt := st.chat_input("💬 Ask your question here..."):
+if prompt := st.chat_input("Ask something about your PDFs..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.chat_message("user").markdown(prompt)
 
     with st.chat_message("assistant"):
-        with st.spinner("🤔 Thinking..."):
+        with st.spinner("Thinking..."):
             try:
-                res = requests.get(
-                    f"{BACKEND_URL}/chat",
-                    params={"session_id": st.session_state.session_id, "user_input": prompt},
+                res = requests.post(
+                    f"{BACKEND_URL}/chat/",
+                    params={
+                        "session_id": st.session_state.session_id,
+                        "user_input": prompt
+                    },
+                    timeout=300
                 )
                 if res.status_code == 200:
                     data = res.json()

@@ -52,7 +52,13 @@ async def chat(session_id: str, user_input: str, db: Session = Depends(get_db)):
         embedding_function=embedding_fn,
     )
 
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
+    #retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
+    retriever = vectorstore.as_retriever(
+    search_kwargs={
+        "k": 4,
+        "filter": {"session_id": session_id}   # ✅ Filter only this session’s embeddings
+    }
+)
 
     # 4️⃣ Build the prompt for GPT-4o
     template = """

@@ -1,6 +1,18 @@
 import os
 from langchain_community.vectorstores.pgvector import PGVector
 
+from sqlalchemy import create_engine, text
+import os
+
+def delete_session_embeddings(session_id: str):
+    """Deletes all embeddings for a given session_id."""
+    engine = create_engine(os.getenv("DATABASE_URL"))
+    with engine.connect() as conn:
+        conn.execute(text("DELETE FROM langchain_pg_embedding WHERE metadata->>'session_id' = :sid"), {"sid": session_id})
+        conn.commit()
+
+
+
 def store_embeddings(chunks, embedding_fn, metadatas):
     """Store text + embeddings in PostgreSQL pgvector."""
     vector_store = PGVector(

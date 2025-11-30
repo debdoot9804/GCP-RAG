@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import AzureOpenAIEmbeddings
 from .vectorstore_pg import store_embeddings
+from .vectorstore_pg import delete_session_embeddings
 from ..utils.parser import parse_file
 
 
@@ -14,6 +15,8 @@ os.environ["AZURE_OPENAI_API_VERSION"] = os.getenv("API_VERSION")
 
 def process_and_store_documents(files, session_id: str):
     """Process uploaded files, extract text, split, embed, and store in Postgres."""
+    
+    delete_session_embeddings(session_id)
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     results = []
 
