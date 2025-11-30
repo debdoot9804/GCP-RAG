@@ -1,0 +1,13 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        'us-central1-docker.pkg.dev/$PROJECT_ID/rag-repo/rag-backend:latest',
+        '--build-arg',
+        'HF_TOKEN=${_HF_TOKEN}',
+        '.'
+      ]
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/rag-repo/rag-backend:latest'

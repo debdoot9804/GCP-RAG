@@ -33,8 +33,9 @@ jobs:
       - name: 🏗️ Build and Push Docker Image
         run: |
           gcloud builds submit \
-            --tag us-central1-docker.pkg.dev/${{ env.PROJECT_ID }}/rag-repo/rag-backend:latest \
-            --build-arg HF_TOKEN=${{ secrets.HF_TOKEN }} .
+            --config cloudbuild.yaml \
+            --substitutions _HF_TOKEN=${{ secrets.HF_TOKEN }}
+
 
       - name: 🚀 Deploy to Cloud Run
         run: |
