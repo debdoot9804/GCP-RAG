@@ -113,7 +113,7 @@ with st.sidebar:
     if st.button("🔄 Start New Session"):
         st.session_state.messages = []
         st.session_state.session_id = str(uuid.uuid4())
-        st.experimental_rerun()
+        st.rerun()
     st.markdown("---")
     st.markdown("**Powered by FastAPI + Azure OpenAI + Streamlit**")
     st.caption("Deployed on Google Cloud Run ☁️")
