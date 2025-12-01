@@ -1,6 +1,3 @@
-this is my readme :
-
-
 
 # 🤖 RAG AI Chat Assistant
 
